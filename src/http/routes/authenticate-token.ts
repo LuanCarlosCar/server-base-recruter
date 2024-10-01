@@ -17,7 +17,7 @@ export const authenticateTokenRoute: FastifyPluginAsyncZod = async (app) => {
         }),
       },
     },
-    async (request, response) => {
+    async (request) => {
       const { token } = request.body;
 
       try {

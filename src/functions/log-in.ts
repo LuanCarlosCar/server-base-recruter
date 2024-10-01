@@ -2,6 +2,7 @@ import { eq } from "drizzle-orm";
 import { db } from "../db";
 import { tblUsuario } from "../db/schema";
 import { generateToken } from "../common/tokengenerate";
+import type { CustomError } from "../types/common";
 const bcrypt = require("bcrypt");
 
 interface LogInRequest {
@@ -20,7 +21,7 @@ export async function logIn(request: LogInRequest) {
 
   if (user.length === 0) {
     const error = new Error("Email invalido!");
-    (error as any).statusCode = 404; // Adiciona um código de status
+    (error as CustomError).statusCode = 404;
     throw error;
   }
 
@@ -28,7 +29,7 @@ export async function logIn(request: LogInRequest) {
 
   if (!isMatch) {
     const error = new Error("Senha incorreta");
-    (error as any).statusCode = 404; // Adiciona um código de status
+    (error as CustomError).statusCode = 404;
     throw error;
   }
 

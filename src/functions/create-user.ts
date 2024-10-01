@@ -2,6 +2,7 @@ import { eq } from "drizzle-orm";
 import { generateToken } from "../common/tokengenerate";
 import { db } from "../db";
 import { tblUsuario } from "../db/schema";
+import type { CustomError } from "../types/common";
 const bcrypt = require("bcrypt");
 
 interface CreateUserRequest {
@@ -23,7 +24,7 @@ export async function createUser(request: CreateUserRequest) {
 
   if (previousUser.length) {
     const error = new Error("Email já cadastrado");
-    (error as any).statusCode = 404; // Adiciona um código de status
+    (error as CustomError).statusCode = 404;
     throw error;
   }
 

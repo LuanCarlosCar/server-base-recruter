@@ -1,6 +1,7 @@
 import { z } from "zod";
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { createUser } from "../../functions/create-user";
+import type { CustomError } from "../../types/common";
 
 export const createUserRoute: FastifyPluginAsyncZod = async (app) => {
   app.post(
@@ -30,10 +31,13 @@ export const createUserRoute: FastifyPluginAsyncZod = async (app) => {
 
         return response.send(result);
       } catch (error) {
-        const statusCode = (error as any).statusCode || 500;
+        const newError = error as CustomError;
 
-        console.log("error.message", error.message);
-        return response.status(statusCode).send({ error: error.message });
+        newError.statusCode || 500;
+
+        return response
+          .status(newError.statusCode)
+          .send({ error: newError.message });
       }
     }
   );
